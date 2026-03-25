@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Validar Certificado{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white"><h4 class="mb-0">Validación de certificado digital</h4></div>
+      <div class="card-body">
+        <form method="get" class="input-group mb-4">
+          <input class="form-control" name="token" value="{{ token }}" placeholder="Pega el token firmado">
+          <button class="btn btn-primary">Validar</button>
+        </form>
+        {% if token %}
+          {% if payload %}
+            <div class="alert alert-success">Certificado VÁLIDO.</div>
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Código:</strong> {{ payload.code }}</li>
+              <li class="list-group-item"><strong>Participante:</strong> {{ payload.full_name }}</li>
+              <li class="list-group-item"><strong>Email:</strong> {{ payload.email }}</li>
+              <li class="list-group-item"><strong>Evento:</strong> {{ payload.event }}</li>
+            </ul>
+          {% else %}
+            <div class="alert alert-danger">Certificado inválido o alterado.</div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
