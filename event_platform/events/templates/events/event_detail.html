@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <h2>{{ event.title }}</h2>
+        <p class="text-muted">{{ event.summary }}</p>
+        <p>{{ event.description }}</p>
+        <div class="row g-3">
+          <div class="col-md-4"><div class="border rounded p-2"><small>Modalidad</small><div class="fw-semibold">{{ event.get_modality_display }}</div></div></div>
+          <div class="col-md-4"><div class="border rounded p-2"><small>Países</small><div class="fw-semibold">{{ event.country_scope }}</div></div></div>
+          <div class="col-md-4"><div class="border rounded p-2"><small>Ciudades</small><div class="fw-semibold">{{ event.city_scope }}</div></div></div>
+        </div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+          {% if event.registration_link %}<a class="btn btn-outline-primary" href="{{ event.registration_link }}" target="_blank">Link de inscripción público</a>{% endif %}
+          {% if event.livestream_link %}<a class="btn btn-outline-danger" href="{{ event.livestream_link }}" target="_blank">Entrar a streaming</a>{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white"><h5 class="mb-0">Inscribir asistente</h5></div>
+      <div class="card-body">
+        <form method="post" class="row g-3">
+          {% csrf_token %}
+          {% for field in form %}
+          <div class="col-md-6">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+          </div>
+          {% endfor %}
+          <div class="col-12"><button class="btn btn-primary">Registrar y emitir certificado</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <h5>Aforo</h5>
+        <div class="progress" role="progressbar">
+          <div class="progress-bar" style="width: {% widthratio event.seats_taken event.capacity 100 %}%"></div>
+        </div>
+        <div class="mt-2">{{ event.seats_taken }} / {{ event.capacity }} ocupados</div>
+        <div class="text-success">{{ event.seats_left }} cupos disponibles</div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white"><h5 class="mb-0">Asistentes</h5></div>
+      <ul class="list-group list-group-flush">
+        {% for reg in registrations %}
+        <li class="list-group-item">
+          <div class="fw-semibold">{{ reg.full_name }}</div>
+          <div class="small text-muted">{{ reg.email }}</div>
+          {% if reg.certificate %}
+          <a class="small" href="{% url 'certificate_verify' %}?token={{ reg.certificate.signed_token }}">Verificar certificado</a>
+          {% endif %}
+          <form method="post" action="{% url 'attendance_toggle' reg.id %}" class="mt-2">{% csrf_token %}
+            <button class="btn btn-sm {% if reg.attended %}btn-success{% else %}btn-outline-secondary{% endif %}">{% if reg.attended %}Asistió{% else %}Marcar asistencia{% endif %}</button>
+          </form>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted">Sin inscripciones todavía.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
