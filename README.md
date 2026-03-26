@@ -156,6 +156,23 @@ La validación detecta alteraciones del token y marca certificados inválidos.
 
 ---
 
+## 👨‍💻 Desarrollado por Isaac Esteban Haro Torres
+
+**Ingeniero en Sistemas · Full Stack Developer · Automatización · Data**
+
+### 📞 Contacto
+
+- 📧 **Email:** zackharo1@gmail.com
+- 📱 **WhatsApp:** [+593 988055517](https://wa.me/593988055517)
+- 💻 **GitHub:** [ieharo1](https://github.com/ieharo1)
+- 🌐 **Portafolio:** [ieharo1.github.io](https://ieharo1.github.io/portafolio-isaac.haro/)
+
+---
+
 ## 📄 Licencia
 
-MIT
+© 2026 Isaac Esteban Haro Torres - Todos los derechos reservados.
+
+---
+
+⭐ Si te gustó el proyecto, ¡dame una estrella en GitHub!
